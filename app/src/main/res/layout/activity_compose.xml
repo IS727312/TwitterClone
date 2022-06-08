@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:counterEnabled="true"
+    app:counterMaxLength="140"
     tools:context=".ComposeActivity">
 
     <EditText
@@ -18,11 +20,11 @@
         android:gravity="start|top"
         android:hint="@string/my_hint"
         android:inputType="textMultiLine"
-        android:maxLength="280"
         android:minLines="5"
-        app:CounterMaxLength="280"
-        app:counterEnabled="true"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:textColorHint="#546E7A"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:autofillHints=""
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/bTweet"
@@ -33,4 +35,15 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:text="@string/tweet" />
+
+    <TextView
+        android:id="@+id/tvCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etCompose"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        tools:text="gfgh" />
+
 </RelativeLayout>
