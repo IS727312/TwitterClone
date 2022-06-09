@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -46,17 +45,15 @@ public class TimelineActivity extends AppCompatActivity {
         swipeRefreshLayout = findViewById(R.id.srLayout);
 
         final Button button = findViewById(R.id.bLogOut);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Code here executes on main thread after user presses button
-                TwitterApp.getRestClient(TimelineActivity.this).clearAccessToken();
+        button.setOnClickListener(v -> {
+            // Code here executes on main thread after user presses button
+            TwitterApp.getRestClient(TimelineActivity.this).clearAccessToken();
 
-                // navigate backwards to Login screen
-                Intent i = new Intent(TimelineActivity.this, LoginActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // this makes sure the Back button won't work
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // same as above
-                startActivity(i);
-            }
+            // navigate backwards to Login screen
+            Intent i = new Intent(TimelineActivity.this, LoginActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // this makes sure the Back button won't work
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // same as above
+            startActivity(i);
         });
 
         client = TwitterApp.getRestClient(this);
@@ -71,8 +68,18 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(adapter);
 
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            // Your code to refresh the list here.
+            // Make sure you call swipeContainer.setRefreshing(false)
+            // once the network request has completed successfully
+            tweets.clear();
+            populateHomeTimeline();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
         populateHomeTimeline();
         //
+
 
     }
 
@@ -117,9 +124,6 @@ public class TimelineActivity extends AppCompatActivity {
             //Navigate to the compose activity
             Intent i = new Intent(this, ComposeActivity.class);
             startActivityForResult(i, REQUEST_CODE);
-
-
-
 
         }
         return super.onOptionsItemSelected(item);

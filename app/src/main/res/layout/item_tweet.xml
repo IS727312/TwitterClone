@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:autoLink="web"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,8 +23,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="2dp"
         android:layout_toEndOf="@+id/tvUsername"
         tools:text="ElMikelM" />
 
@@ -48,15 +49,29 @@
         android:textColor="#546E7A"
         tools:text=".@User" />
 
+    <TextView
+        android:id="@+id/tvRelativeTimeStamp"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="258dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="2dp"
+        android:layout_toEndOf="@+id/ivProfilePicture"
+        android:visibility="visible" />
+
     <ImageView
         android:id="@+id/ivTweetImage"
-        android:layout_width="287dp"
-        android:layout_height="152dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/tvBody"
         android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="62dp"
-        android:visibility="visible"
+        android:layout_marginStart="-50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toEndOf="@+id/ivProfilePicture"
+        android:visibility="gone"
         tools:srcCompat="@tools:sample/avatars" />
+
 </RelativeLayout>

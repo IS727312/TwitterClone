@@ -1,8 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
-import android.icu.number.CompactNotation;
-import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.viewHolder
     Context context;
     List<Tweet> tweets;
     //Pass in the context and list of tweets
-
 
     public TweetsAdapter(Context context, List<Tweet> tweets) {
         this.context = context;
@@ -49,28 +47,18 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.viewHolder
     public int getItemCount() {
         return tweets.size();
     }
-    /*
-    public void clear() {
-        tweets.clear();
-        notifyDataSetChanged();
-    }
-
-    public void addAll(List<Tweet> list){
-        tweets.addAll(list);
-        notifyDataSetChanged();
-    }
-
-     */
-
 
     //Define a new viewHolder
     public class viewHolder extends RecyclerView.ViewHolder {
+
+        public static final String TAG = "TweetsAdapter";
 
         ImageView ivProfilePicture;
         ImageView ivTweetImage;
         TextView tvScreenName;
         TextView tvBody;
         TextView tvUsername;
+        TextView tvRelativeTimeStamp;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,6 +67,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.viewHolder
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvBody = itemView.findViewById(R.id.tvBody);
             tvUsername = itemView.findViewById(R.id.tvUsername);
+            tvRelativeTimeStamp = itemView.findViewById(R.id.tvRelativeTimeStamp);
         }
 
         public void bind(Tweet tweet) {
@@ -88,6 +77,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.viewHolder
             tvUsername.setText(tweet.user.name);
             Glide.with(context).load(tweet.user.profileImageURL).into(ivProfilePicture);
             Glide.with(context).load(tweet.tweetImage).into(ivTweetImage);
+            if(tweet.tweetImage != ""){
+                ivTweetImage.setVisibility(View.VISIBLE);
+            }
+            tvRelativeTimeStamp.setText(tweet.relativeTimeStamp);
+            Log.e(TAG, tweet.relativeTimeStamp);
         }
     }
 
