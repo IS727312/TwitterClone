@@ -36,11 +36,14 @@ public class TimelineActivity extends AppCompatActivity {
     RecyclerView rvTweets;
     List<Tweet> tweets;
     TweetsAdapter adapter;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+
+        swipeRefreshLayout = findViewById(R.id.srLayout);
 
         final Button button = findViewById(R.id.bLogOut);
         button.setOnClickListener(new View.OnClickListener() {
@@ -114,47 +117,13 @@ public class TimelineActivity extends AppCompatActivity {
             //Navigate to the compose activity
             Intent i = new Intent(this, ComposeActivity.class);
             startActivityForResult(i, REQUEST_CODE);
-            /*ActivityResultLauncher<Intent> messageActivityResultLauncher = registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-                        @Override
-                        public void onActivityResult(ActivityResult result) {
-                            // If the user comes back to this activity from EditActivity
-                            // with no error or cancellation
-                            if (result.getResultCode() == Activity.RESULT_OK) {
-                                Intent data = result.getData();
-                                // Get the data passed from MessageActivity
-                                String forwardedMessage = data.getExtras().getString("forwardedMessage");
-                            }
-                        }
-                    });
 
-            public void startMessageActivity() {
-                Intent intent = new Intent(this, ComposeActivity.class);
-                intent.putExtra("messageToForward", "CodePath");
-                messageActivityResultLauncher.launch(intent);
-            }
-
-             */
 
 
 
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /*void onLogoutButton() {
-        // forget who's logged in
-        TwitterApp.getRestClient(this).clearAccessToken();
-
-        // navigate backwards to Login screen
-        Intent i = new Intent(this, LoginActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // this makes sure the Back button won't work
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // same as above
-        startActivity(i);
-    }
-
-     */
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

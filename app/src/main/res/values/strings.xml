@@ -7,5 +7,6 @@
     <string name="intent_host">cprest</string>
     <string name="tweet">Tweet</string>
     <string name="my_hint">What is on your mind?</string>
+    <string name="button">Log Out</string>
 
 </resources>

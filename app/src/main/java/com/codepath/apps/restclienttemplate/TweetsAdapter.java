@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 import android.icu.number.CompactNotation;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,21 +67,38 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.viewHolder
     public class viewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivProfilePicture;
+        ImageView ivTweetImage;
         TextView tvScreenName;
         TextView tvBody;
+        TextView tvUsername;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfilePicture = itemView.findViewById(R.id.ivProfilePicture);
+            ivTweetImage = itemView.findViewById(R.id.ivTweetImage);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvBody = itemView.findViewById(R.id.tvBody);
+            tvUsername = itemView.findViewById(R.id.tvUsername);
         }
 
         public void bind(Tweet tweet) {
+            String username = "@" + tweet.user.screenName;
             tvBody.setText(tweet.body);
-            tvScreenName.setText(tweet.user.screenName);
-
+            tvScreenName.setText(username);
+            tvUsername.setText(tweet.user.name);
             Glide.with(context).load(tweet.user.profileImageURL).into(ivProfilePicture);
+            Glide.with(context).load(tweet.tweetImage).into(ivTweetImage);
         }
+    }
+
+    public void clear() {
+        tweets.clear();
+        notifyDataSetChanged();
+    }
+
+    // Add a list of items -- change to type used
+    public void addAll(List<Tweet> list) {
+        tweets.addAll(list);
+        notifyDataSetChanged();
     }
 }

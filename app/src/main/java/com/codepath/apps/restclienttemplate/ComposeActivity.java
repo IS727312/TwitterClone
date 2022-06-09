@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -45,8 +44,8 @@ public class ComposeActivity extends AppCompatActivity {
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                tvCounter.setText(String.valueOf(s.length()));
+                String counter = s.length() + "/140";
+                tvCounter.setText(counter);
                 Log.d(TAG,tvCounter.getText().toString());
             }
             @Override

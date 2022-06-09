@@ -12,6 +12,7 @@ import java.util.List;
 public class Tweet {
     public String body;
     public String createdAt;
+    public String tweetImage;
     public User user;
 
     //Empty constructor due to Parcel
@@ -19,7 +20,23 @@ public class Tweet {
 
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
-        tweet.body = jsonObject.getString("text");
+        //Get entities and the media array
+        JSONObject entities = jsonObject.getJSONObject("entities");
+        JSONArray jsonArray = entities.optJSONArray("media");
+
+        //Retriev the whole text of the tweet
+        if(jsonObject.has("full_text")) {
+            tweet.body = jsonObject.getString("full_text");
+        } else {
+            tweet.body = jsonObject.getString("text");
+        }
+
+        //Check the media array exists
+        if(jsonArray != null){
+            JSONObject image = jsonArray.getJSONObject(0);
+            tweet.tweetImage = image.getString("media_url_https");
+        }
+
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
 
