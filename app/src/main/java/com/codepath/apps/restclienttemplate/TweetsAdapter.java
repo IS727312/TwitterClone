@@ -19,8 +19,8 @@ import java.util.List;
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.viewHolder>{
     Context context;
     List<Tweet> tweets;
-    //Pass in the context and list of tweets
 
+    //Pass in the context and list of tweets
     public TweetsAdapter(Context context, List<Tweet> tweets) {
         this.context = context;
         this.tweets = tweets;
@@ -32,6 +32,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.viewHolder
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_tweet, parent, false);
         return new viewHolder(view);
+
+
     }
 
     //Bind values based on the position
@@ -77,14 +79,16 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.viewHolder
             tvUsername.setText(tweet.user.name);
             Glide.with(context).load(tweet.user.profileImageURL).into(ivProfilePicture);
             Glide.with(context).load(tweet.tweetImage).into(ivTweetImage);
-            if(tweet.tweetImage != ""){
+            if(tweet.tweetImage.equals("")){
+                ivTweetImage.setVisibility(View.GONE);
+            }else {
                 ivTweetImage.setVisibility(View.VISIBLE);
             }
             tvRelativeTimeStamp.setText(tweet.relativeTimeStamp);
-            Log.e(TAG, tweet.relativeTimeStamp);
         }
     }
 
+    /*
     public void clear() {
         tweets.clear();
         notifyDataSetChanged();
@@ -95,4 +99,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.viewHolder
         tweets.addAll(list);
         notifyDataSetChanged();
     }
+
+     */
 }

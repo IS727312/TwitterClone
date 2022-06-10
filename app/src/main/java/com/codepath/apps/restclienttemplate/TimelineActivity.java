@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toolbar;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -31,6 +33,7 @@ import okhttp3.Headers;
 public class TimelineActivity extends AppCompatActivity {
     public static final String TAG = "TimelineActivity";
     public final int REQUEST_CODE = 20;
+    private EndlessRecyclerViewScrollListener scrollListener;
     TwitterClient client;
     RecyclerView rvTweets;
     List<Tweet> tweets;
@@ -40,6 +43,11 @@ public class TimelineActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM );
+        getSupportActionBar().setCustomView(R.layout.toolbar_tweeter_icon_layout);
+
+
         setContentView(R.layout.activity_timeline);
 
         swipeRefreshLayout = findViewById(R.id.srLayout);
@@ -65,8 +73,10 @@ public class TimelineActivity extends AppCompatActivity {
         adapter = new TweetsAdapter(this, tweets );
 
         // RecyclerView setup
-        rvTweets.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvTweets.setLayoutManager(linearLayoutManager);
         rvTweets.setAdapter(adapter);
+
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
             // Your code to refresh the list here.
@@ -76,6 +86,20 @@ public class TimelineActivity extends AppCompatActivity {
             populateHomeTimeline();
             swipeRefreshLayout.setRefreshing(false);
         });
+
+
+
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                populateHomeTimeline();
+                //scrollListener.resetState();
+            }
+        };
+
+        rvTweets.addOnScrollListener(scrollListener);
 
         populateHomeTimeline();
         //
@@ -125,6 +149,15 @@ public class TimelineActivity extends AppCompatActivity {
             Intent i = new Intent(this, ComposeActivity.class);
             startActivityForResult(i, REQUEST_CODE);
 
+        }else if(item.getItemId() == R.id.miLogOut){
+            // Code here executes on main thread after user presses button
+            TwitterApp.getRestClient(TimelineActivity.this).clearAccessToken();
+
+            // navigate backwards to Login screen
+            Intent i = new Intent(TimelineActivity.this, LoginActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // this makes sure the Back button won't work
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // same as above
+            startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -145,6 +178,14 @@ public class TimelineActivity extends AppCompatActivity {
             rvTweets.smoothScrollToPosition(0);
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void loadNextDataFromApi(int offset) {
+        // Send an API request to retrieve appropriate paginated data
+        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
+        //  --> Deserialize and construct new model objects from the API response
+        //  --> Append the new data objects to the existing set of items inside the array of items
+        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
     }
 }
 
