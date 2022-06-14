@@ -46,8 +46,6 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-![](https://github.com/IS727312/TwitterClone/blob/master/ezgif.com-gif-maker.gif)
-
 <img src='https://github.com/IS727312/TwitterClone/blob/master/ezgif.com-gif-maker.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [Kap](https://getkap.co/).
